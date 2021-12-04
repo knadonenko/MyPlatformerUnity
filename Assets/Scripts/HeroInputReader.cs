@@ -11,7 +11,13 @@ public class HeroInputReader : MonoBehaviour
     public void OnHorizontalMovement(InputAction.CallbackContext context)
     {
         var direction = context.ReadValue<float>();
-        _hero.SetDirection(direction);
+        _hero.SetDirection(direction, true);
+    }
+
+    public void OnVerticalMovement(InputAction.CallbackContext context)
+    {
+        var direction = context.ReadValue<float>();
+        _hero.SetDirection(direction, false);
     }
 
     public void OnLeftMouseButtonClick(InputAction.CallbackContext context)

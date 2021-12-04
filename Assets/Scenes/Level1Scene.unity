@@ -777,6 +777,21 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5ffcaa8c-db43-4cec-940c-51afce1a92b7
     m_ActionName: Hero/SaySomething
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 272023093}
+        m_MethodName: OnVerticalMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 6fc8cad6-41ba-403c-9ee9-b0121bbdbb6e
+    m_ActionName: Hero/VerticalMovement[/Keyboard/s,/Keyboard/w]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Hero
