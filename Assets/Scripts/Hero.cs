@@ -5,13 +5,27 @@ using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
-    private float _direction;
+
+    [SerializeField] private float jumpSpeed;
     [SerializeField] private float speed;
-    private bool _vectorX;
-    public void SetDirection(float direction, bool vectorX)
+    [SerializeField] private LayerMask _groundLayer;
+
+    [SerializeField] private LayerCheck _groundCheck;
+
+    // [SerializeField] private float _groundCheckRadius;
+    // [SerializeField] private Vector3 _groundCheckPositionDelta;
+    
+    private Rigidbody2D _rigidbody;
+    private Vector2 _direction;
+    
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody2D>();
+    }
+
+    public void SetDirection(Vector2 direction)
     {
         _direction = direction;
-        _vectorX = vectorX;
     }
 
     public void SaySomething()
@@ -19,18 +33,34 @@ public class Hero : MonoBehaviour
         Debug.Log("Something!");   
     }
 
-    private void Update()
+    private bool IsGrounded()
     {
-        if (_direction != 0 && _vectorX)
+        // var hit = Physics2D.CircleCast(transform.position + _groundCheckPositionDelta, 
+        //     _groundCheckRadius, Vector2.down, 0, _groundLayer);
+        // return hit.collider != null;
+        return _groundCheck.IsTouchingLayer;
+    }
+
+    private void FixedUpdate()
+    {
+        _rigidbody.velocity = new Vector2(_direction.x * speed,  _rigidbody.velocity.y);
+        var isJumping = _direction.y > 0;
+        if (isJumping)
         {
-            var delta = _direction * speed * Time.deltaTime;
-            var newX = transform.position.x + delta;
-            transform.position = new Vector3(newX, transform.position.y, transform.position.z);
-        } else if (_direction != 0 && !_vectorX)
+            if (IsGrounded())
+            {
+                _rigidbody.AddForce(Vector2.up * jumpSpeed, ForceMode2D.Impulse);
+            }
+        } else if (_rigidbody.velocity.y > 0)
         {
-            var delta = _direction * speed * Time.deltaTime;
-            var newY = transform.position.y + delta;
-            transform.position = new Vector3(transform.position.x, newY, transform.position.z);
+            _rigidbody.velocity = new Vector2(_direction.x,  _rigidbody.velocity.y * 0.5f);
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        // Debug.DrawRay(transform.position, Vector3.down, IsGrounded() ? Color.blue : Color.red);
+        Gizmos.color = IsGrounded() ? Color.blue : Color.red;
+        Gizmos.DrawSphere(transform.position, 0.3f);
     }
 }
