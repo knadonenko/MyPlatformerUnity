@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Hero : MonoBehaviour
 {
@@ -9,7 +6,6 @@ public class Hero : MonoBehaviour
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float speed;
     [SerializeField] private LayerMask _groundLayer;
-
     [SerializeField] private LayerCheck _groundCheck;
 
     // [SerializeField] private float _groundCheckRadius;
@@ -17,6 +13,8 @@ public class Hero : MonoBehaviour
     
     private Rigidbody2D _rigidbody;
     private Vector2 _direction;
+    
+    private int coinsSum = 0;
     
     private void Awake()
     {
@@ -55,6 +53,12 @@ public class Hero : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(_direction.x,  _rigidbody.velocity.y * 0.5f);
         }
+    }
+
+    public void UpdateCoins(int coinValue)
+    {
+        coinsSum += coinValue;
+        Debug.Log(coinsSum);
     }
 
     private void OnDrawGizmos()
