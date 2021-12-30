@@ -13,12 +13,20 @@ public class Hero : MonoBehaviour
     
     private Rigidbody2D _rigidbody;
     private Vector2 _direction;
+    private Animator _animator;
+    private SpriteRenderer _spriteRenderer;
+
+    private static readonly int IsGroundedKey = Animator.StringToHash("is-grounded");
+    private static readonly int IsRunningKey = Animator.StringToHash("is-running");
+    private static readonly int VertVelocityKey = Animator.StringToHash("vertical-velocity");
     
     private int coinsSum = 0;
     
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public void SetDirection(Vector2 direction)
@@ -53,6 +61,12 @@ public class Hero : MonoBehaviour
         {
             _rigidbody.velocity = new Vector2(_direction.x,  _rigidbody.velocity.y * 0.5f);
         }
+        
+        _animator.SetBool(IsGroundedKey, IsGrounded());
+        _animator.SetBool(IsRunningKey, _direction.x != 0);
+        _animator.SetFloat(VertVelocityKey, _rigidbody.velocity.y);
+
+        UpdateSpriteDirection();
     }
 
     public void UpdateCoins(int coinValue)
@@ -66,5 +80,16 @@ public class Hero : MonoBehaviour
         // Debug.DrawRay(transform.position, Vector3.down, IsGrounded() ? Color.blue : Color.red);
         Gizmos.color = IsGrounded() ? Color.blue : Color.red;
         Gizmos.DrawSphere(transform.position, 0.3f);
+    }
+
+    private void UpdateSpriteDirection()
+    {
+        if (_direction.x > 0)
+        {
+            _spriteRenderer.flipX = false;
+        } else if (_direction.x < 0)
+        {
+            _spriteRenderer.flipX = true;
+        }
     }
 }
