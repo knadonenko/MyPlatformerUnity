@@ -10,10 +10,7 @@ namespace Components
         
         private void OnTriggerEnter2D(Collider2D col)
         {
-            if (col.gameObject.CompareTag(_tag))
-            {
-                _action?.Invoke();
-            }
+            if (col.gameObject.CompareTag(_tag)) _action?.Invoke();
         }
     }
 }
