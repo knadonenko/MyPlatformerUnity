@@ -23,7 +23,6 @@ public class HeroInputReader : MonoBehaviour
     {
         if (context.canceled)
         {
-            Debug.Log("Interacting!!!");
             _hero.Interact();
         }
     }

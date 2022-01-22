@@ -12,6 +12,10 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _interactionRadius;
     [SerializeField] private Collider2D[] _interactionResults = new Collider2D[1];
     [SerializeField] private LayerMask _interactableLayer;
+    [SerializeField] private SpawnComponent _footStepParticles;
+    [SerializeField] private SpawnComponent _jumpParticles;
+    [SerializeField] private SpawnComponent _fallParticles;
+    [SerializeField] private ParticleSystem _hitParticles;
 
     // [SerializeField] private float _groundCheckRadius;
     // [SerializeField] private Vector3 _groundCheckPositionDelta;
@@ -22,14 +26,14 @@ public class Hero : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private bool _allowDoubleJump;
     private bool _isGrounded;
+    private bool _isFalling = true;
     
     private static readonly int IsGroundedKey = Animator.StringToHash("is-grounded");
     private static readonly int IsRunningKey = Animator.StringToHash("is-running");
     private static readonly int VertVelocityKey = Animator.StringToHash("vertical-velocity");
     private static readonly int HitKey = Animator.StringToHash("hit");
-    private static readonly int InteractKey = Animator.StringToHash("");
 
-    private int coinsSum = 0;
+    private int _coinsSum = 0;
 
     private void Awake()
     {
@@ -64,6 +68,17 @@ public class Hero : MonoBehaviour
     private void Update()
     {
         _isGrounded = IsGrounded();
+        _isFalling = CheckIsFalling();
+        CheckFallen();
+    }
+
+    private void CheckFallen()
+    {
+        if (_isFalling && _isGrounded && !_allowDoubleJump)
+        {
+            _fallParticles.Spawn();
+            _isFalling = false;
+        }
     }
 
     private void FixedUpdate()
@@ -82,8 +97,7 @@ public class Hero : MonoBehaviour
 
     public void UpdateCoins(int coinValue)
     {
-        coinsSum += coinValue;
-        Debug.Log(coinsSum);
+        _coinsSum += coinValue;
     }
 
     private float CalculateYVelocity()
@@ -107,20 +121,27 @@ public class Hero : MonoBehaviour
 
     private float CalculateJumpVelocity(float yVelocity)
     {
-        var isFalling = _rigidbody.velocity.y <= 0.001f;
+        var isFalling = CheckIsFalling();
         if (!isFalling) return yVelocity;
 
         if (IsGrounded())
         {
             yVelocity = jumpSpeed;
+            _jumpParticles.Spawn();
         }
         else if(_allowDoubleJump)
         {
             yVelocity += jumpSpeed;
+            _jumpParticles.Spawn();
             _allowDoubleJump = false;
         }
 
         return yVelocity;
+    }
+
+    private bool CheckIsFalling()
+    {
+        return _rigidbody.velocity.y <= 0.001f;
     }
 
     private void OnDrawGizmos()
@@ -134,11 +155,11 @@ public class Hero : MonoBehaviour
     {
         if (_direction.x > 0)
         {
-            _spriteRenderer.flipX = false;
+            transform.localScale = Vector3.one;
         }
         else if (_direction.x < 0)
         {
-            _spriteRenderer.flipX = true;
+            transform.localScale = new Vector3(-1, 1, 1);
         }
     }
 
@@ -146,6 +167,29 @@ public class Hero : MonoBehaviour
     {
         _animator.SetTrigger(HitKey);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpDamageSpeed);
+
+        if (_coinsSum > 0)
+        {
+            SpawnCoins();
+        }
+    }
+
+    private void SpawnCoins()
+    {
+        var numCoinsToDispose = Mathf.Min(_coinsSum, 5);
+        _coinsSum -= numCoinsToDispose;
+
+        var burst = _hitParticles.emission.GetBurst(0);
+        burst.count = numCoinsToDispose;
+        _hitParticles.emission.SetBurst(0, burst);
+        
+        _hitParticles.gameObject.SetActive(true);
+        _hitParticles.Play();
+    }
+
+    public void SpawnFootDust()
+    {
+        _footStepParticles.Spawn();
     }
 
     public void Interact()
@@ -162,5 +206,5 @@ public class Hero : MonoBehaviour
             var interactable = _interactionResults[i].GetComponent<InteractableComponent>();
             if (interactable != null) interactable.Interact();
         }
-    }
+    } 
 }
