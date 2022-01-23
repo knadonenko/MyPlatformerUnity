@@ -28,7 +28,7 @@ public class Hero : MonoBehaviour
     private bool _isGrounded;
     private bool _isFalling = true;
     private bool _isDashing = false;
-    private float _dashCoolDown = 3.0f;
+    private float _dashCoolDown = 2.0f;
     private float _timeStamp;
     
     private static readonly int IsGroundedKey = Animator.StringToHash("is-grounded");
