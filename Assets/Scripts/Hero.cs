@@ -27,6 +27,9 @@ public class Hero : MonoBehaviour
     private bool _allowDoubleJump;
     private bool _isGrounded;
     private bool _isFalling = true;
+    private bool _isDashing = false;
+    private float _dashCoolDown = 2.0f;
+    private float _timeStamp;
     
     private static readonly int IsGroundedKey = Animator.StringToHash("is-grounded");
     private static readonly int IsRunningKey = Animator.StringToHash("is-running");
@@ -60,11 +63,6 @@ public class Hero : MonoBehaviour
         return _groundCheck.IsTouchingLayer;
     }
 
-    private bool IsInteractable()
-    {
-        return _interactableCheck.IsTouchingLayer;
-    }
-
     private void Update()
     {
         _isGrounded = IsGrounded();
@@ -83,7 +81,7 @@ public class Hero : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var xVelocity = _direction.x * speed;
+        var xVelocity = CalculateXVelocity();//_direction.x * speed;
         var yVelocity = CalculateYVelocity();
 
         _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
@@ -117,6 +115,19 @@ public class Hero : MonoBehaviour
         }
 
         return yVelocity;
+    }
+
+    private float CalculateXVelocity()
+    {
+        var xVelocity = _direction.x * speed;
+
+        if (_isDashing)
+        {
+            xVelocity *= 15f;
+            _isDashing = false;
+        } 
+        
+        return xVelocity;
     }
 
     private float CalculateJumpVelocity(float yVelocity)
@@ -206,5 +217,16 @@ public class Hero : MonoBehaviour
             var interactable = _interactionResults[i].GetComponent<InteractableComponent>();
             if (interactable != null) interactable.Interact();
         }
-    } 
+    }
+
+    public void DoDash()
+    {
+        Debug.Log(_timeStamp + "  " + Time.time);
+        if (Time.time > _timeStamp + _dashCoolDown && !_isDashing)
+        {
+            _timeStamp = Time.time;
+            Debug.Log("DASHING");
+            _isDashing = true;
+        }
+    }
 }
