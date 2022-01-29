@@ -1,17 +1,22 @@
-﻿using Components;
+﻿using System;
+using Components;
 using UnityEngine;
+using Utils;
 
 public class Hero : MonoBehaviour
 {
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float jumpDamageSpeed;
     [SerializeField] private float speed;
+    [SerializeField] private float _slamDownVelocity;
     [SerializeField] private LayerMask _groundLayer; 
     [SerializeField] private LayerCheck _groundCheck;
     [SerializeField] private LayerCheck _interactableCheck;
     [SerializeField] private float _interactionRadius;
     [SerializeField] private Collider2D[] _interactionResults = new Collider2D[1];
     [SerializeField] private LayerMask _interactableLayer;
+    
+    [Space] [Header("Particles ")]
     [SerializeField] private SpawnComponent _footStepParticles;
     [SerializeField] private SpawnComponent _jumpParticles;
     [SerializeField] private SpawnComponent _fallParticles;
@@ -66,8 +71,8 @@ public class Hero : MonoBehaviour
     private void Update()
     {
         _isGrounded = IsGrounded();
-        _isFalling = CheckIsFalling();
-        CheckFallen();
+        // _isFalling = CheckIsFalling();
+        // CheckFallen();
     }
 
     private void CheckFallen()
@@ -145,6 +150,7 @@ public class Hero : MonoBehaviour
             yVelocity += jumpSpeed;
             _jumpParticles.Spawn();
             _allowDoubleJump = false;
+            // _isFalling = true;
         }
 
         return yVelocity;
@@ -227,6 +233,18 @@ public class Hero : MonoBehaviour
             _timeStamp = Time.time;
             Debug.Log("DASHING");
             _isDashing = true;
+        }
+    }
+
+    public void OnCollisionEnter2D(Collision2D col)
+    {
+        if (col.gameObject.IsInLayer(_groundLayer))
+        {
+            var contact = col.contacts[0];
+            if (contact.relativeVelocity.y >= _slamDownVelocity)
+            {
+                _fallParticles.Spawn();
+            }
         }
     }
 }
