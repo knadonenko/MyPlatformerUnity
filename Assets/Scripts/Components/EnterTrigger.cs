@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Components
@@ -6,11 +7,16 @@ namespace Components
     public class EnterTrigger : MonoBehaviour
     {
         [SerializeField] private string _tag;
-        [SerializeField] private UnityEvent _action;
+        [SerializeField] private EnterEvent _action;
         
         private void OnTriggerEnter2D(Collider2D col)
         {
-            if (col.gameObject.CompareTag(_tag)) _action?.Invoke();
+            if (col.gameObject.CompareTag(_tag)) _action?.Invoke(col.gameObject);
+        }
+        
+        [Serializable]
+        public class EnterEvent : UnityEvent<GameObject>
+        {
         }
     }
 }

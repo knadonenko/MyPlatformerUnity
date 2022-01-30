@@ -1,6 +1,7 @@
-﻿using System;
-using Components;
+﻿using Components;
 using DefaultNamespace;
+using UnityEditor;
+using UnityEditor.Animations;
 using UnityEngine;
 using Utils;
 
@@ -9,6 +10,7 @@ public class Hero : MonoBehaviour
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float jumpDamageSpeed;
     [SerializeField] private float speed;
+    [SerializeField] private int _damage;
     [SerializeField] private float _slamDownVelocity;
     [SerializeField] private LayerMask _groundLayer; 
     [SerializeField] private LayerCheck _groundCheck;
@@ -16,15 +18,19 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _interactionRadius;
     [SerializeField] private Collider2D[] _interactionResults = new Collider2D[1];
     [SerializeField] private LayerMask _interactableLayer;
-    [SerializeField] private int _damage;
 
     [SerializeField] private CheckCircleOverlap _attackRange;
-    
-    [Space] [Header("Particles ")]
+
+    [Space] [Header("Particles")]
     [SerializeField] private SpawnComponent _footStepParticles;
     [SerializeField] private SpawnComponent _jumpParticles;
     [SerializeField] private SpawnComponent _fallParticles;
+    [SerializeField] private SpawnComponent _swordParticles;
     [SerializeField] private ParticleSystem _hitParticles;
+
+    [Space] [Header("Animators")]
+    [SerializeField] private AnimatorController _armed;
+    [SerializeField] private AnimatorController _disArmer;
 
     // [SerializeField] private float _groundCheckRadius;
     // [SerializeField] private Vector3 _groundCheckPositionDelta;
@@ -43,8 +49,11 @@ public class Hero : MonoBehaviour
     private static readonly int IsRunningKey = Animator.StringToHash("is-running");
     private static readonly int VertVelocityKey = Animator.StringToHash("vertical-velocity");
     private static readonly int HitKey = Animator.StringToHash("hit");
+    private static readonly int AttackKey = Animator.StringToHash("attack");
 
     private int _coinsSum = 0;
+
+    private bool _isArmed;
 
     private void Awake()
     {
@@ -103,13 +112,8 @@ public class Hero : MonoBehaviour
         if (IsGrounded()) _allowDoubleJump = true;
 
         if (isJumpPressing)
-        {
             yVelocity = CalculateJumpVelocity(yVelocity);
-        }
-        else if (_rigidbody.velocity.y > 0)
-        {
-            yVelocity *= 0.5f;
-        }
+        else if (_rigidbody.velocity.y > 0) yVelocity *= 0.5f;
 
         return yVelocity;
     }
@@ -153,23 +157,11 @@ public class Hero : MonoBehaviour
         return _rigidbody.velocity.y <= 0.001f;
     }
 
-    private void OnDrawGizmos()
-    {
-        // Debug.DrawRay(transform.position, Vector3.down, IsGrounded() ? Color.blue : Color.red);
-        Gizmos.color = IsGrounded() ? Color.blue : Color.red;
-        Gizmos.DrawSphere(transform.position, 0.3f);
-    }
-
     private void UpdateSpriteDirection()
     {
         if (_direction.x > 0)
-        {
             transform.localScale = Vector3.one;
-        }
-        else if (_direction.x < 0)
-        {
-            transform.localScale = new Vector3(-1, 1, 1);
-        }
+        else if (_direction.x < 0) transform.localScale = new Vector3(-1, 1, 1);
     }
 
     public void TakeDamage()
@@ -177,10 +169,7 @@ public class Hero : MonoBehaviour
         _animator.SetTrigger(HitKey);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpDamageSpeed);
 
-        if (_coinsSum > 0)
-        {
-            SpawnCoins();
-        }
+        if (_coinsSum > 0) SpawnCoins();
     }
 
     private void SpawnCoins()
@@ -196,11 +185,6 @@ public class Hero : MonoBehaviour
         _hitParticles.Play();
     }
 
-    public void SpawnFootDust()
-    {
-        _footStepParticles.Spawn();
-    }
-
     public void Interact()
     {
         var size = Physics2D.OverlapCircleNonAlloc(
@@ -209,7 +193,7 @@ public class Hero : MonoBehaviour
             _interactionResults,
             _interactableLayer);
 
-        for (int i = 0; i < size; i++)
+        for (var i = 0; i < size; i++)
         {
             Debug.Log("Interacting123456");
             var interactable = _interactionResults[i].GetComponent<InteractableComponent>();
@@ -233,24 +217,46 @@ public class Hero : MonoBehaviour
         if (col.gameObject.IsInLayer(_groundLayer))
         {
             var contact = col.contacts[0];
-            if (contact.relativeVelocity.y >= _slamDownVelocity)
-            {
-                _fallParticles.Spawn();
-            }
+            if (contact.relativeVelocity.y >= _slamDownVelocity) _fallParticles.Spawn();
         }
     }
 
     public void Attack()
     {
-        Debug.Log("Attack!!!");
+        if(!_isArmed) return;
+        _animator.SetTrigger(AttackKey);
+        _swordParticles.Spawn();
+    }
+
+    public void ArmHero()
+    {
+        _isArmed = true;
+        _animator.runtimeAnimatorController = _armed;
+    }
+    
+    public void SpawnFootDust()
+    {
+        _footStepParticles.Spawn();
+    }
+
+    public void PerformAttack()
+    {
         var gameObjects = _attackRange.GetObjectsInRange();
         foreach (var gameObject in gameObjects)
         {
             var hitPoints = gameObject.GetComponent<HealthComponent>();
-            if (hitPoints != null)
-            {
-                hitPoints.ApplyDamage(_damage);
-            }
+            if (hitPoints != null && gameObject.CompareTag("Enemy")) hitPoints.ApplyDamage(_damage);
         }
     }
-}
+    
+#if UNITY_EDITOR
+    private void OnDrawGizmos()
+    {
+        // Debug.DrawRay(transform.position, Vector3.down, IsGrounded() ? Color.blue : Color.red);
+        // Gizmos.color = IsGrounded() ? Color.blue : Color.red;
+        // Gizmos.DrawSphere(transform.position, 0.3f);
+        Handles.color = IsGrounded() ? HandlesUtils.TransparentGreen : HandlesUtils.TransparentRed;
+        Handles.DrawSolidDisc(transform.position, Vector3.forward, 0.3f);
+    }
+#endif
+} 
