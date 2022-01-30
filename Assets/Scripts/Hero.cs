@@ -1,5 +1,6 @@
 ﻿using System;
 using Components;
+using DefaultNamespace;
 using UnityEngine;
 using Utils;
 
@@ -15,6 +16,9 @@ public class Hero : MonoBehaviour
     [SerializeField] private float _interactionRadius;
     [SerializeField] private Collider2D[] _interactionResults = new Collider2D[1];
     [SerializeField] private LayerMask _interactableLayer;
+    [SerializeField] private int _damage;
+
+    [SerializeField] private CheckCircleOverlap _attackRange;
     
     [Space] [Header("Particles ")]
     [SerializeField] private SpawnComponent _footStepParticles;
@@ -31,7 +35,6 @@ public class Hero : MonoBehaviour
     private SpriteRenderer _spriteRenderer;
     private bool _allowDoubleJump;
     private bool _isGrounded;
-    private bool _isFalling = true;
     private bool _isDashing = false;
     private float _dashCoolDown = 2.0f;
     private float _timeStamp;
@@ -71,22 +74,11 @@ public class Hero : MonoBehaviour
     private void Update()
     {
         _isGrounded = IsGrounded();
-        // _isFalling = CheckIsFalling();
-        // CheckFallen();
-    }
-
-    private void CheckFallen()
-    {
-        if (_isFalling && _isGrounded && !_allowDoubleJump)
-        {
-            _fallParticles.Spawn();
-            _isFalling = false;
-        }
     }
 
     private void FixedUpdate()
     {
-        var xVelocity = CalculateXVelocity();//_direction.x * speed;
+        var xVelocity = CalculateXVelocity();
         var yVelocity = CalculateYVelocity();
 
         _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
@@ -244,6 +236,20 @@ public class Hero : MonoBehaviour
             if (contact.relativeVelocity.y >= _slamDownVelocity)
             {
                 _fallParticles.Spawn();
+            }
+        }
+    }
+
+    public void Attack()
+    {
+        Debug.Log("Attack!!!");
+        var gameObjects = _attackRange.GetObjectsInRange();
+        foreach (var gameObject in gameObjects)
+        {
+            var hitPoints = gameObject.GetComponent<HealthComponent>();
+            if (hitPoints != null)
+            {
+                hitPoints.ApplyDamage(_damage);
             }
         }
     }

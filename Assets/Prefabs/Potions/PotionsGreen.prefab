@@ -164,18 +164,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _frameRate: 10
-  _loop: 1
-  _sprites:
-  - {fileID: 2011574832808370117, guid: df4502f1211df4478a479620c11076fe, type: 3}
-  - {fileID: -8438763151253471919, guid: df4502f1211df4478a479620c11076fe, type: 3}
-  - {fileID: -7587008787810219046, guid: df4502f1211df4478a479620c11076fe, type: 3}
-  - {fileID: 950379908824699032, guid: df4502f1211df4478a479620c11076fe, type: 3}
-  - {fileID: -512142692958456438, guid: df4502f1211df4478a479620c11076fe, type: 3}
-  - {fileID: 8745225756722806956, guid: df4502f1211df4478a479620c11076fe, type: 3}
-  - {fileID: -7481350877133238684, guid: df4502f1211df4478a479620c11076fe, type: 3}
-  _onComplete:
-    m_PersistentCalls:
-      m_Calls: []
+  _clips:
+  - _name: idle
+    _sprites:
+    - {fileID: 2011574832808370117, guid: df4502f1211df4478a479620c11076fe, type: 3}
+    - {fileID: -8438763151253471919, guid: df4502f1211df4478a479620c11076fe, type: 3}
+    - {fileID: -7587008787810219046, guid: df4502f1211df4478a479620c11076fe, type: 3}
+    - {fileID: 950379908824699032, guid: df4502f1211df4478a479620c11076fe, type: 3}
+    - {fileID: -512142692958456438, guid: df4502f1211df4478a479620c11076fe, type: 3}
+    - {fileID: 8745225756722806956, guid: df4502f1211df4478a479620c11076fe, type: 3}
+    - {fileID: -7481350877133238684, guid: df4502f1211df4478a479620c11076fe, type: 3}
+    _loop: 1
+    _allowNext: 0
+    _onComplete:
+      m_PersistentCalls:
+        m_Calls: []
 --- !u!114 &9082822399514333565
 MonoBehaviour:
   m_ObjectHideFlags: 0
