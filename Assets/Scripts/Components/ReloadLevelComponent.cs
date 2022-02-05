@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DefaultNamespace.Model;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Components
@@ -7,6 +8,9 @@ namespace Components
     {
         public void Reload()
         {
+            var session = FindObjectOfType<GameSession>();
+            DestroyImmediate(session);
+            
             var scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
         }

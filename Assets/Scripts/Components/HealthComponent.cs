@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.Events;
 
 namespace Components
@@ -9,10 +10,13 @@ namespace Components
         [SerializeField] private int _maxHealth;
         [SerializeField] private UnityEvent _onDamage;
         [SerializeField] private UnityEvent _onDie;
+        [SerializeField] private HealthChangeEvent _onChange;
 
         public void ApplyDamage(int damageValue)
         {
             _health -= damageValue;
+            _onChange?.Invoke(_health);
+            
             _onDamage?.Invoke();
             if (_health <= 0)
             {
@@ -24,6 +28,14 @@ namespace Components
         {
             _health += healValue;
             if (_health > _maxHealth) _health = _maxHealth;
+        }
+
+        [Serializable]
+        public class HealthChangeEvent : UnityEvent<int> {}
+
+        public void SetHealth(int health)
+        {
+            _health = health;
         }
     }   
 }

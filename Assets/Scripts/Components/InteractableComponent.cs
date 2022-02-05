@@ -9,6 +9,7 @@ namespace Components
 
         public void Interact()
         {
+            Debug.Log("Interract");
             _action?.Invoke();
         }
     }

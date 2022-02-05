@@ -1,5 +1,6 @@
 ﻿using Components;
 using DefaultNamespace;
+using DefaultNamespace.Model;
 using UnityEditor;
 using UnityEditor.Animations;
 using UnityEngine;
@@ -30,7 +31,7 @@ public class Hero : MonoBehaviour
 
     [Space] [Header("Animators")]
     [SerializeField] private AnimatorController _armed;
-    [SerializeField] private AnimatorController _disArmer;
+    [SerializeField] private AnimatorController _disArmed;
 
     // [SerializeField] private float _groundCheckRadius;
     // [SerializeField] private Vector3 _groundCheckPositionDelta;
@@ -51,9 +52,7 @@ public class Hero : MonoBehaviour
     private static readonly int HitKey = Animator.StringToHash("hit");
     private static readonly int AttackKey = Animator.StringToHash("attack");
 
-    private int _coinsSum = 0;
-
-    private bool _isArmed;
+    private GameSession _session;
 
     private void Awake()
     {
@@ -62,6 +61,14 @@ public class Hero : MonoBehaviour
         _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void Start()
+    {
+        _session = FindObjectOfType<GameSession>();
+        var health = GetComponent<HealthComponent>();
+        health.SetHealth(_session.Data.Health);
+        UpdateHeroWeapon();
+    }
+    
     public void SetDirection(Vector2 direction)
     {
         _direction = direction;
@@ -70,6 +77,11 @@ public class Hero : MonoBehaviour
     public void SaySomething()
     {
         Debug.Log("Something!");
+    }
+
+    public void OnHealthChanged(int currentHealth)
+    {
+        _session.Data.Health = currentHealth;
     }
 
     private bool IsGrounded()
@@ -101,7 +113,7 @@ public class Hero : MonoBehaviour
 
     public void UpdateCoins(int coinValue)
     {
-        _coinsSum += coinValue;
+        _session.Data.Coin += coinValue;
     }
 
     private float CalculateYVelocity()
@@ -169,13 +181,13 @@ public class Hero : MonoBehaviour
         _animator.SetTrigger(HitKey);
         _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpDamageSpeed);
 
-        if (_coinsSum > 0) SpawnCoins();
+        if (_session.Data.Coin > 0) SpawnCoins();
     }
 
     private void SpawnCoins()
     {
-        var numCoinsToDispose = Mathf.Min(_coinsSum, 5);
-        _coinsSum -= numCoinsToDispose;
+        var numCoinsToDispose = Mathf.Min(_session.Data.Coin, 5);
+        _session.Data.Coin -= numCoinsToDispose;
 
         var burst = _hitParticles.emission.GetBurst(0);
         burst.count = numCoinsToDispose;
@@ -223,15 +235,21 @@ public class Hero : MonoBehaviour
 
     public void Attack()
     {
-        if(!_isArmed) return;
+        if(!_session.Data.IsArmed) return;
         _animator.SetTrigger(AttackKey);
         _swordParticles.Spawn();
     }
 
     public void ArmHero()
     {
-        _isArmed = true;
+        _session.Data.IsArmed = true;
+        UpdateHeroWeapon();
         _animator.runtimeAnimatorController = _armed;
+    }
+
+    private void UpdateHeroWeapon()
+    {
+        _animator.runtimeAnimatorController = _session.Data.IsArmed ? _armed : _disArmed;
     }
     
     public void SpawnFootDust()
