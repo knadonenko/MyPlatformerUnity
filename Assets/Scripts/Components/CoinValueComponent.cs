@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Creatures;
+using UnityEngine;
 
 public class CoinValueComponent : MonoBehaviour
 {

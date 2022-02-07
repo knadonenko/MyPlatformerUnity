@@ -1,3 +1,4 @@
+using Creatures;
 using UnityEngine;
 
 namespace Components

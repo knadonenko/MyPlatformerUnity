@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7049961871014726943}
   - component: {fileID: 7049961871014726941}
   - component: {fileID: 7049961871014726940}
+  - component: {fileID: 1552072551}
   m_Layer: 0
   m_Name: Hero_0
   m_TagString: Player
@@ -124,23 +125,19 @@ MonoBehaviour:
   jumpDamageSpeed: 40
   speed: 4
   _damage: 1
-  _slamDownVelocity: 10
   _groundLayer:
     serializedVersion: 2
     m_Bits: 512
+  _attackRange: {fileID: 7049961871689865668}
   _groundCheck: {fileID: 7049961872197260624}
-  _interactableCheck: {fileID: 0}
+  _particles: {fileID: 1552072551}
+  _slamDownVelocity: 10
   _interactionRadius: 1
   _interactionResults:
   - {fileID: 0}
   _interactableLayer:
     serializedVersion: 2
     m_Bits: 256
-  _attackRange: {fileID: 7049961871689865668}
-  _footStepParticles: {fileID: 7049961872315946821}
-  _jumpParticles: {fileID: 7049961872028470895}
-  _fallParticles: {fileID: 7049961872372496975}
-  _swordParticles: {fileID: 7049961872244578473}
   _hitParticles: {fileID: 7049961872062989103}
   _armed: {fileID: 9100000, guid: 955cd9bb6cb5d4d21bbf9e622e2386d2, type: 2}
   _disArmed: {fileID: 9100000, guid: de8fcd25969d0447d850387e13b637ba, type: 2}
@@ -362,6 +359,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1552072551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7049961871014726933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3db15235e46944eeaa81b64f214ea2ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawners:
+  - id: run
+    Component: {fileID: 7049961872315946821}
+  - id: jump
+    Component: {fileID: 7049961872028470895}
+  - id: fall
+    Component: {fileID: 7049961872372496975}
+  - id: swish
+    Component: {fileID: 7049961872244578473}
 --- !u!1 &7049961871689865670
 GameObject:
   m_ObjectHideFlags: 0
@@ -5332,7 +5350,7 @@ MonoBehaviour:
   _layerToCheck:
     serializedVersion: 2
     m_Bits: 512
-  IsTouchingLayer: 0
+  _isTouchingLayer: 0
 --- !u!1 &7049961872244578475
 GameObject:
   m_ObjectHideFlags: 0

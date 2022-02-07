@@ -14783,6 +14783,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3354989866005581729, guid: 5eaaef1af366549b69e5d9858946c070,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3354989866005581756, guid: 5eaaef1af366549b69e5d9858946c070,
         type: 3}
       propertyPath: m_Name
@@ -15227,6 +15232,11 @@ PrefabInstance:
       propertyPath: _onDie.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 2112234067}
+    - target: {fileID: 7049961871014726941, guid: 3d1120fa62d3047f18aca1f933774c14,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d1120fa62d3047f18aca1f933774c14, type: 3}
 --- !u!1001 &7688332097863636011
@@ -15321,6 +15331,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: StraightPalm
+      objectReference: {fileID: 0}
+    - target: {fileID: 8154238101102649926, guid: 3ffe495cc5c094f17bce897053fa7871,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8154238101102649927, guid: 3ffe495cc5c094f17bce897053fa7871,
         type: 3}
