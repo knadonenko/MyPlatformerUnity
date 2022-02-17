@@ -6,6 +6,8 @@ namespace DefaultNamespace.Creatures
 {
     public class Creature : MonoBehaviour
     {
+        [Header("Parameters")] 
+        [SerializeField] private bool _invertScale;
         [SerializeField] protected float jumpSpeed;
         [SerializeField] private float jumpDamageSpeed;
         [SerializeField] protected float speed;
@@ -104,9 +106,10 @@ namespace DefaultNamespace.Creatures
         
         private void UpdateSpriteDirection()
         {
+            var multiplier = _invertScale ? -1 : 1;
             if (_direction.x > 0)
-                transform.localScale = Vector3.one;
-            else if (_direction.x < 0) transform.localScale = new Vector3(-1, 1, 1);
+                transform.localScale = new Vector3(multiplier, 1, 1);
+            else if (_direction.x < 0) transform.localScale = new Vector3(-1 * multiplier, 1, 1);
         }
 
         public virtual void Attack()
@@ -116,12 +119,7 @@ namespace DefaultNamespace.Creatures
         
         public void PerformAttack()
         {
-            var gameObjects = _attackRange.GetObjectsInRange();
-            foreach (var gameObject in gameObjects)
-            {
-                var hitPoints = gameObject.GetComponent<HealthComponent>();
-                if (hitPoints != null && gameObject.CompareTag("Enemy")) hitPoints.ApplyDamage(_damage);
-            }
+            _attackRange.Check();
         }
         
     }

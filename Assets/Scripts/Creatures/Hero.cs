@@ -1,4 +1,5 @@
 ﻿using Components;
+using DefaultNamespace;
 using DefaultNamespace.Creatures;
 using DefaultNamespace.Model;
 using UnityEditor;
@@ -13,8 +14,8 @@ namespace Creatures
 
         [SerializeField] private float _slamDownVelocity;
         [SerializeField] private float _interactionRadius;
-        [SerializeField] private Collider2D[] _interactionResults = new Collider2D[1];
-        [SerializeField] private LayerMask _interactableLayer;
+
+        [SerializeField] private CheckCircleOverlap _interactionCheck;
 
         [Space] [Header("Particles")] [SerializeField]
         private ParticleSystem _hitParticles;
@@ -128,22 +129,11 @@ namespace Creatures
 
         public void Interact()
         {
-            var size = Physics2D.OverlapCircleNonAlloc(
-                transform.position,
-                _interactionRadius,
-                _interactionResults,
-                _interactableLayer);
-
-            for (var i = 0; i < size; i++)
-            {
-                var interactable = _interactionResults[i].GetComponent<InteractableComponent>();
-                if (interactable != null) interactable.Interact();
-            }
+            _interactionCheck.Check();
         }
 
         public void DoDash()
         {
-            Debug.Log(_timeStamp + "  " + Time.time);
             if (Time.time > _timeStamp + _dashCoolDown && !_isDashing)
             {
                 _timeStamp = Time.time;
