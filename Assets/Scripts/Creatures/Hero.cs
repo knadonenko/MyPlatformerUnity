@@ -28,6 +28,7 @@ namespace Creatures
         // [SerializeField] private float _groundCheckRadius;
         // [SerializeField] private Vector3 _groundCheckPositionDelta;
 
+        private static readonly int ThrowKey = Animator.StringToHash("throw");
 
         private SpriteRenderer _spriteRenderer;
         private bool _allowDoubleJump;
@@ -162,12 +163,25 @@ namespace Creatures
         {
             _session.Data.IsArmed = true;
             UpdateHeroWeapon();
-            _animator.runtimeAnimatorController = _armed;
+            Animator.runtimeAnimatorController = _armed;
         }
 
         private void UpdateHeroWeapon()
         {
-            _animator.runtimeAnimatorController = _session.Data.IsArmed ? _armed : _disArmed;
+            Animator.runtimeAnimatorController = _session.Data.IsArmed ? _armed : _disArmed;
+        }
+
+        public void OnDoThrow()
+        {
+            _particles.Spawn("throw");
+        }
+        
+        public void Throw()
+        {
+            if (_armed)
+            { 
+                Animator.SetTrigger(ThrowKey);    
+            }
         }
 
 #if UNITY_EDITOR

@@ -131,6 +131,7 @@ Transform:
   - {fileID: 7049961871689865669}
   - {fileID: 7049961872244578474}
   - {fileID: 385544052}
+  - {fileID: 1551248806962171529}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -209,6 +210,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc1f343f46a65491d8185494069886a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _invertScale: 0
   jumpSpeed: 12
   jumpDamageSpeed: 40
   speed: 4
@@ -326,6 +328,21 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1858f4a3-0b43-46fd-b976-8d9db7e34fb4
     m_ActionName: Hero/Attack[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7049961871014726930}
+        m_MethodName: OnThrow
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 096e30a2-7146-4d2f-97b6-59366d16dfc2
+    m_ActionName: Hero/Throw[/Keyboard/shift]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Hero
@@ -378,7 +395,7 @@ Animator:
   m_GameObject: {fileID: 7049961871014726933}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: de8fcd25969d0447d850387e13b637ba, type: 2}
+  m_Controller: {fileID: 9100000, guid: 955cd9bb6cb5d4d21bbf9e622e2386d2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -464,6 +481,8 @@ MonoBehaviour:
     Component: {fileID: 7049961872372496975}
   - id: swish
     Component: {fileID: 7049961872244578473}
+  - id: throw
+    Component: {fileID: 7188312107834224021}
 --- !u!1 &7049961871689865670
 GameObject:
   m_ObjectHideFlags: 0
@@ -5603,3 +5622,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7049961872372496960}
   _prefab: {fileID: 9084145094646808465, guid: 2ce6df041a2a44b1eb61e80702a6b0d9, type: 3}
+--- !u!1 &8459143049902360827
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1551248806962171529}
+  - component: {fileID: 7188312107834224021}
+  m_Layer: 11
+  m_Name: ThrowProjectilePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 4422084297763085224, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1551248806962171529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459143049902360827}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.365, y: -0.123, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7049961871014726931}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7188312107834224021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8459143049902360827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aae235c44fa4ccc81a6efa6b4231e48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _target: {fileID: 1551248806962171529}
+  _prefab: {fileID: 9084145094646808465, guid: 38a398e5afdcb4e60ac860d6966a3767, type: 3}

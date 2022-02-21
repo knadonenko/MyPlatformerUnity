@@ -20,7 +20,7 @@ namespace DefaultNamespace.Creatures
         
         protected Rigidbody2D _rigidbody;
         protected Vector2 _direction;
-        protected Animator _animator;
+        protected Animator Animator;
         protected bool _isGrounded;
         private bool _isJumping;
         
@@ -33,7 +33,7 @@ namespace DefaultNamespace.Creatures
         protected virtual void Awake()
         {
             _rigidbody = GetComponent<Rigidbody2D>();
-            _animator = GetComponent<Animator>();
+            Animator = GetComponent<Animator>();
         }
 
         protected virtual void Update()
@@ -53,9 +53,9 @@ namespace DefaultNamespace.Creatures
 
             _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 
-            _animator.SetBool(IsGroundedKey, _isGrounded);
-            _animator.SetBool(IsRunningKey, _direction.x != 0);
-            _animator.SetFloat(VertVelocityKey, _rigidbody.velocity.y);
+            Animator.SetBool(IsGroundedKey, _isGrounded);
+            Animator.SetBool(IsRunningKey, _direction.x != 0);
+            Animator.SetFloat(VertVelocityKey, _rigidbody.velocity.y);
  
             UpdateSpriteDirection();
         }
@@ -100,7 +100,7 @@ namespace DefaultNamespace.Creatures
         public virtual void TakeDamage()
         {
             _isJumping = false;
-            _animator.SetTrigger(HitKey);
+            Animator.SetTrigger(HitKey);
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpDamageSpeed);
         }
         
@@ -114,7 +114,7 @@ namespace DefaultNamespace.Creatures
 
         public virtual void Attack()
         {
-            _animator.SetTrigger(AttackKey);
+            Animator.SetTrigger(AttackKey);
         }
         
         public void PerformAttack()
