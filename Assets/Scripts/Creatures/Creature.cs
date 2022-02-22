@@ -19,7 +19,7 @@ namespace DefaultNamespace.Creatures
         [SerializeField] protected SpawnListComponent _particles;
         
         protected Rigidbody2D _rigidbody;
-        protected Vector2 _direction;
+        protected Vector2 Direction;
         protected Animator Animator;
         protected bool _isGrounded;
         private bool _isJumping;
@@ -43,7 +43,7 @@ namespace DefaultNamespace.Creatures
         
         public void SetDirection(Vector2 direction)
         {
-            _direction = direction;
+            Direction = direction;
         }
         
         private void FixedUpdate()
@@ -54,21 +54,21 @@ namespace DefaultNamespace.Creatures
             _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 
             Animator.SetBool(IsGroundedKey, _isGrounded);
-            Animator.SetBool(IsRunningKey, _direction.x != 0);
+            Animator.SetBool(IsRunningKey, Direction.x != 0);
             Animator.SetFloat(VertVelocityKey, _rigidbody.velocity.y);
  
-            UpdateSpriteDirection();
+            UpdateSpriteDirection(Direction);
         }
         
         protected virtual float CalculateXVelocity()
         {
-            return _direction.x * speed;
+            return Direction.x * speed;
         }
         
         protected virtual float CalculateYVelocity()
         {
             var yVelocity = _rigidbody.velocity.y;
-            var isJumpPressing = _direction.y > 0;
+            var isJumpPressing = Direction.y > 0;
 
             if (_isGrounded)
             {
@@ -104,12 +104,12 @@ namespace DefaultNamespace.Creatures
             _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpDamageSpeed);
         }
         
-        private void UpdateSpriteDirection()
+        public void UpdateSpriteDirection(Vector2 direction)
         {
             var multiplier = _invertScale ? -1 : 1;
-            if (_direction.x > 0)
+            if (direction.x > 0)
                 transform.localScale = new Vector3(multiplier, 1, 1);
-            else if (_direction.x < 0) transform.localScale = new Vector3(-1 * multiplier, 1, 1);
+            else if (direction.x < 0) transform.localScale = new Vector3(-1 * multiplier, 1, 1);
         }
 
         public virtual void Attack()

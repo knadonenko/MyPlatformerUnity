@@ -76,7 +76,7 @@ namespace Creatures
 
         protected override float CalculateYVelocity()
         {
-            var isJumpPressing = _direction.y > 0;
+            var isJumpPressing = Direction.y > 0;
             
             if (_isGrounded)
             {
@@ -103,7 +103,7 @@ namespace Creatures
             if (_isDashing)
             {
                 _isDashing = false;
-                return _direction.x * speed * 15f;
+                return Direction.x * speed * 15f;
             } 
         
             return base.CalculateXVelocity();

@@ -48,9 +48,17 @@ namespace Creatures
 
         private IEnumerator AgroToHero()
         {
+            LookAtHero();
             _particles.Spawn("exclamation");
             yield return new WaitForSeconds(_alarmDelay);
             StartState(GoToHero());
+        }
+
+        private void LookAtHero()
+        {
+            var direction = GetDirectionToTarget();
+            _creature.SetDirection(Vector2.zero);
+            _creature.UpdateSpriteDirection(direction);
         }
 
         private IEnumerator GoToHero()
@@ -68,8 +76,11 @@ namespace Creatures
                 yield return null;
             }
             
+            _creature.SetDirection(Vector2.zero);
             _particles.Spawn("miss");
             yield return new WaitForSeconds(_missHeroCooldown);
+            
+            StartState(_patrol.DoPatrol());
         }
 
         private IEnumerator Attack()
@@ -83,11 +94,10 @@ namespace Creatures
             StartState(GoToHero());
         }
 
-        private void SetDirectionToTarget() 
+        private void SetDirectionToTarget()
         {
-            var direction = _target.transform.position - transform.position;
-            direction.y = 0;
-            _creature.SetDirection(direction.normalized);
+            var direction = GetDirectionToTarget();
+            _creature.SetDirection(direction);
         }
 
         private IEnumerator Patrolling()
@@ -110,6 +120,13 @@ namespace Creatures
             _animator.SetBool(IsDeadKey, true);
             if (_current != null)
                 StopCoroutine(_current);
+        }
+
+        private Vector2 GetDirectionToTarget()
+        {
+            var direction = _target.transform.position - transform.position;
+            direction.y = 0;
+            return direction.normalized;
         }
     }
 }
