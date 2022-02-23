@@ -188,6 +188,7 @@ namespace Creatures
                 Animator.SetTrigger(ThrowKey); 
                 _throwCooldown.Reset();
                 _swordsAmount--;
+                _session.Data.SwordAmount = _swordsAmount;
             }
         }
 
