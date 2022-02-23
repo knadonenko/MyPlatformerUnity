@@ -99,6 +99,13 @@ namespace Creatures
             var direction = GetDirectionToTarget();
             _creature.SetDirection(direction);
         }
+        
+        private Vector2 GetDirectionToTarget()
+        {
+            var direction = _target.transform.position - transform.position;
+            direction.y = 0;
+            return direction.normalized;
+        }
 
         private IEnumerator Patrolling()
         {
@@ -118,15 +125,10 @@ namespace Creatures
         {
             _isDead = true;
             _animator.SetBool(IsDeadKey, true);
+            _creature.SetDirection(Vector2.zero);
             if (_current != null)
                 StopCoroutine(_current);
         }
-
-        private Vector2 GetDirectionToTarget()
-        {
-            var direction = _target.transform.position - transform.position;
-            direction.y = 0;
-            return direction.normalized;
-        }
+        
     }
 }

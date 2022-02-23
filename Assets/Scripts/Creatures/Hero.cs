@@ -20,10 +20,11 @@ namespace Creatures
         [Space] [Header("Particles")] [SerializeField]
         private ParticleSystem _hitParticles;
 
-        [Space] [Header("Animators")] [SerializeField]
-        private AnimatorController _armed;
-
+        [Space] [Header("Animators")] 
+        [SerializeField] private AnimatorController _armed;
         [SerializeField] private AnimatorController _disArmed;
+
+        [SerializeField] private Cooldown _throwCooldown;
 
         // [SerializeField] private float _groundCheckRadius;
         // [SerializeField] private Vector3 _groundCheckPositionDelta;
@@ -42,7 +43,7 @@ namespace Creatures
         protected override void Awake()
         {
             base.Awake();
-            _defaultGravityScale = _rigidbody.gravityScale;
+            _defaultGravityScale = Rigidbody.gravityScale;
         }
 
         private void Start()
@@ -178,9 +179,10 @@ namespace Creatures
         
         public void Throw()
         {
-            if (_armed)
+            if (_armed && _throwCooldown.IsReady)
             { 
-                Animator.SetTrigger(ThrowKey);    
+                Animator.SetTrigger(ThrowKey); 
+                _throwCooldown.Reset();
             }
         }
 

@@ -212,7 +212,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _invertScale: 0
   jumpSpeed: 12
-  jumpDamageSpeed: 40
+  jumpDamageSpeed: 10
   speed: 4
   _damage: 1
   _groundLayer:
@@ -227,6 +227,8 @@ MonoBehaviour:
   _hitParticles: {fileID: 7049961872062989103}
   _armed: {fileID: 9100000, guid: 955cd9bb6cb5d4d21bbf9e622e2386d2, type: 2}
   _disArmed: {fileID: 9100000, guid: de8fcd25969d0447d850387e13b637ba, type: 2}
+  _throwCooldown:
+    _value: 1
 --- !u!114 &7049961871014726928
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,7 +438,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 0}
-        m_MethodName: Reload
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -611,6 +613,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7049961872028470880}
   _prefab: {fileID: 6946673336562181067, guid: cdeb5026855394f5688c6ac2a249b1c1, type: 3}
+  invesrtXScale: 0
 --- !u!1 &7049961872062989089
 GameObject:
   m_ObjectHideFlags: 0
@@ -5532,6 +5535,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7049961872244578474}
   _prefab: {fileID: 6183115971520345766, guid: 2d14231c21c924043af1018fae5fee1c, type: 3}
+  invesrtXScale: 0
 --- !u!1 &7049961872315946823
 GameObject:
   m_ObjectHideFlags: 0
@@ -5577,6 +5581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7049961872315946822}
   _prefab: {fileID: 2819337770276961130, guid: 84aaa4fc0b7ca483eabaead72f1f5631, type: 3}
+  invesrtXScale: 0
 --- !u!1 &7049961872372496961
 GameObject:
   m_ObjectHideFlags: 0
@@ -5622,6 +5627,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7049961872372496960}
   _prefab: {fileID: 9084145094646808465, guid: 2ce6df041a2a44b1eb61e80702a6b0d9, type: 3}
+  invesrtXScale: 0
 --- !u!1 &8459143049902360827
 GameObject:
   m_ObjectHideFlags: 0
@@ -5667,3 +5673,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 1551248806962171529}
   _prefab: {fileID: 9084145094646808465, guid: 38a398e5afdcb4e60ac860d6966a3767, type: 3}
+  invesrtXScale: 0

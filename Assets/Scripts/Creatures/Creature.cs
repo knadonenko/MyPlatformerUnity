@@ -18,7 +18,7 @@ namespace DefaultNamespace.Creatures
         [SerializeField] private LayerCheck _groundCheck;
         [SerializeField] protected SpawnListComponent _particles;
         
-        protected Rigidbody2D _rigidbody;
+        protected Rigidbody2D Rigidbody;
         protected Vector2 Direction;
         protected Animator Animator;
         protected bool _isGrounded;
@@ -32,7 +32,7 @@ namespace DefaultNamespace.Creatures
 
         protected virtual void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody2D>();
+            Rigidbody = GetComponent<Rigidbody2D>();
             Animator = GetComponent<Animator>();
         }
 
@@ -51,11 +51,11 @@ namespace DefaultNamespace.Creatures
             var xVelocity = CalculateXVelocity();
             var yVelocity = CalculateYVelocity();
 
-            _rigidbody.velocity = new Vector2(xVelocity, yVelocity);
+            Rigidbody.velocity = new Vector2(xVelocity, yVelocity);
 
             Animator.SetBool(IsGroundedKey, _isGrounded);
             Animator.SetBool(IsRunningKey, Direction.x != 0);
-            Animator.SetFloat(VertVelocityKey, _rigidbody.velocity.y);
+            Animator.SetFloat(VertVelocityKey, Rigidbody.velocity.y);
  
             UpdateSpriteDirection(Direction);
         }
@@ -67,7 +67,7 @@ namespace DefaultNamespace.Creatures
         
         protected virtual float CalculateYVelocity()
         {
-            var yVelocity = _rigidbody.velocity.y;
+            var yVelocity = Rigidbody.velocity.y;
             var isJumpPressing = Direction.y > 0;
 
             if (_isGrounded)
@@ -78,10 +78,10 @@ namespace DefaultNamespace.Creatures
             if (isJumpPressing)
             {
                 _isJumping = true;
-                var isFalling = _rigidbody.velocity.y <= 0.001f;
+                var isFalling = Rigidbody.velocity.y <= 0.001f;
                 yVelocity = isFalling ? CalculateJumpVelocity(yVelocity) : yVelocity;
             }
-            else if (_rigidbody.velocity.y > 0 && _isJumping) yVelocity *= 0.5f;
+            else if (Rigidbody.velocity.y > 0 && _isJumping) yVelocity *= 0.5f;
 
             return yVelocity;
         }
@@ -101,7 +101,7 @@ namespace DefaultNamespace.Creatures
         {
             _isJumping = false;
             Animator.SetTrigger(HitKey);
-            _rigidbody.velocity = new Vector2(_rigidbody.velocity.x, jumpDamageSpeed);
+            Rigidbody.velocity = new Vector2(Rigidbody.velocity.x, jumpDamageSpeed);
         }
         
         public void UpdateSpriteDirection(Vector2 direction)

@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 973567712}
   _prefab: {fileID: 9084145094646808465, guid: 42500e838fe3f462389d4bf8ad94be7c, type: 3}
+  invesrtXScale: 0
 --- !u!1 &1176131660
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +134,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _tag: Player
+  _layer:
+    serializedVersion: 2
+    m_Bits: 4294967295
   _action:
     m_PersistentCalls:
       m_Calls:
@@ -192,6 +196,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 2279812724760923177}
   _prefab: {fileID: 9084145094646808465, guid: 6b094e2b36f39424ebedc355f28e03dc, type: 3}
+  invesrtXScale: 0
 --- !u!1 &7049961871014726933
 GameObject:
   m_ObjectHideFlags: 0
@@ -628,6 +633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7049961872028470880}
   _prefab: {fileID: 6946673336562181067, guid: cdeb5026855394f5688c6ac2a249b1c1, type: 3}
+  invesrtXScale: 0
 --- !u!1 &7049961872197260627
 GameObject:
   m_ObjectHideFlags: 0
@@ -737,3 +743,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 7049961872315946822}
   _prefab: {fileID: 2819337770276961130, guid: 84aaa4fc0b7ca483eabaead72f1f5631, type: 3}
+  invesrtXScale: 1
