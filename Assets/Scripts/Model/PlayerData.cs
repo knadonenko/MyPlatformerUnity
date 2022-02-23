@@ -9,5 +9,6 @@ namespace DefaultNamespace.Model
         public int Coin;
         public int Health;
         public bool IsArmed;
+        public int SwordAmount;
     }
 } 

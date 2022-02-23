@@ -36,6 +36,7 @@ namespace Creatures
         private bool _isDashing = false;
         private float _dashCoolDown = 2.0f;
         private float _timeStamp;
+        private int _swordsAmount;
 
         private GameSession _session;
         private float _defaultGravityScale;
@@ -52,6 +53,7 @@ namespace Creatures
             var health = GetComponent<HealthComponent>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             health.SetHealth(_session.Data.Health);
+            _swordsAmount = _session.Data.SwordAmount;
             UpdateHeroWeapon();
         }
 
@@ -163,6 +165,8 @@ namespace Creatures
         public void ArmHero()
         {
             _session.Data.IsArmed = true;
+            _swordsAmount++;
+            _session.Data.SwordAmount = _swordsAmount;
             UpdateHeroWeapon();
             Animator.runtimeAnimatorController = _armed;
         }
@@ -179,10 +183,11 @@ namespace Creatures
         
         public void Throw()
         {
-            if (_armed && _throwCooldown.IsReady)
+            if (_armed && _throwCooldown.IsReady && _swordsAmount > 1)
             { 
                 Animator.SetTrigger(ThrowKey); 
                 _throwCooldown.Reset();
+                _swordsAmount--;
             }
         }
 
