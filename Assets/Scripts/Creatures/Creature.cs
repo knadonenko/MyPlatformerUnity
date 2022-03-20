@@ -1,5 +1,7 @@
 using System;
 using Components;
+using Components.ColliderBased;
+using Components.GOBased;
 using UnityEngine;
 
 namespace DefaultNamespace.Creatures

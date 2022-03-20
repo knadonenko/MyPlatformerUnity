@@ -1,0 +1,20 @@
+using UnityEngine;
+
+namespace Components.GOBased
+{
+    public class SpawnComponent : MonoBehaviour
+    {
+        [SerializeField] private Transform _target;
+        [SerializeField] private GameObject _prefab;
+        [SerializeField] private bool invesrtXScale;
+
+        [ContextMenu("Spawn")]
+        public void Spawn()
+        {
+            var instance =  Instantiate(_prefab, _target.position, Quaternion.identity);
+            var scale = _target.lossyScale;
+            scale.x *= invesrtXScale ? -1 : 1;
+            instance.transform.localScale = scale;
+        }
+    }
+}

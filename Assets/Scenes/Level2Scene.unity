@@ -393,6 +393,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hero
       objectReference: {fileID: 0}
+    - target: {fileID: 7049961871014726941, guid: 3d1120fa62d3047f18aca1f933774c14,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: de8fcd25969d0447d850387e13b637ba, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d1120fa62d3047f18aca1f933774c14, type: 3}
 --- !u!4 &635114773 stripped
