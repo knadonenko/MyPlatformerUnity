@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 3038926370797482191}
   _prefab: {fileID: 9084145094646808465, guid: c9c5237dd597445b28ef9622e2df4ed7, type: 3}
+  invesrtXScale: 0
 --- !u!1 &9084145094646808465
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,7 +223,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6be781a80bce4b4ea9052d4f4ceb4d09, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _flySpeed: 6
+  flySpeed: 2
+  invertX: 0
 --- !u!114 &2358404302773466283
 MonoBehaviour:
   m_ObjectHideFlags: 0
