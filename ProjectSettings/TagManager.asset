@@ -21,9 +21,9 @@ TagManager:
   - Trash
   - Hero
   - Wall
-  - 
-  - 
-  - 
+  - Enemies
+  - Collectables
+  - Checkers
   - 
   - 
   - 
@@ -46,4 +46,7 @@ TagManager:
     locked: 0
   - name: Level
     uniqueID: 1324658231
+    locked: 0
+  - name: Creatures
+    uniqueID: 109286165
     locked: 0
