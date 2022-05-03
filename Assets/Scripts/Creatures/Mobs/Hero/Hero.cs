@@ -30,6 +30,9 @@ namespace Creatures.Mobs.Hero
         // [SerializeField] private float _groundCheckRadius;
         // [SerializeField] private Vector3 _groundCheckPositionDelta;
 
+        private int SwordCount => _session.Data.Inventory.Count("sword");
+        private int CoinCount => _session.Data.Inventory.Count("coin");
+
         private static readonly int ThrowKey = Animator.StringToHash("throw");
         private static readonly int IsOnWallKey = Animator.StringToHash("is-on-wall");
 
@@ -53,11 +56,19 @@ namespace Creatures.Mobs.Hero
         private void Start()
         {
             _session = FindObjectOfType<GameSession>();
+            _session.Data.Inventory.inventoryChanged += OnInventoryChanged;
             var health = GetComponent<HealthComponent>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
-            health.SetHealth(_session.Data.Health);
-            _swordsAmount = _session.Data.SwordAmount;
+            health.SetHealth(_session.Data.health);
+            _swordsAmount = SwordCount;
             UpdateHeroWeapon();
+        }
+
+        public void OnInventoryChanged(string id, int value)
+        {
+            if (id == "sword")
+                UpdateHeroWeapon();
+
         }
 
         public void SaySomething()
@@ -67,7 +78,7 @@ namespace Creatures.Mobs.Hero
 
         public void OnHealthChanged(int currentHealth)
         {
-            _session.Data.Health = currentHealth;
+            _session.Data.health = currentHealth;
         }
 
         protected override void Update()
@@ -89,9 +100,9 @@ namespace Creatures.Mobs.Hero
             Animator.SetBool(IsOnWallKey, _isOnWall);
         }
 
-        public void UpdateCoins(int coinValue)
+        public void AddInInventory(string id, int value)
         {
-            _session.Data.Coin += coinValue;
+            _session.Data.Inventory.Add(id, value);
         }
 
         protected override float CalculateYVelocity()
@@ -132,13 +143,15 @@ namespace Creatures.Mobs.Hero
         public override void TakeDamage()
         {
             base.TakeDamage();
-            if (_session.Data.Coin > 0) SpawnCoins();
+            var coinsCount = CoinCount;
+            if (coinsCount > 0) SpawnCoins();
         }
 
         private void SpawnCoins()
         {
-            var numCoinsToDispose = Mathf.Min(_session.Data.Coin, 5);
-            _session.Data.Coin -= numCoinsToDispose;
+            var coinsCount = CoinCount;
+            var numCoinsToDispose = Mathf.Min(coinsCount, 5);
+            _session.Data.Inventory.Remove("coin", numCoinsToDispose);
 
             var burst = _hitParticles.emission.GetBurst(0);
             burst.count = numCoinsToDispose;
@@ -174,23 +187,15 @@ namespace Creatures.Mobs.Hero
 
         public override void Attack()
         {
-            if(!_session.Data.IsArmed) return;
+            var swordCount = _session.Data.Inventory.Count("sword");
+            if(SwordCount <= 0) return;
             base.Attack();
             _particles.Spawn("swish");
         }
 
-        public void ArmHero()
-        {
-            _session.Data.IsArmed = true;
-            _swordsAmount++;
-            _session.Data.SwordAmount = _swordsAmount;
-            UpdateHeroWeapon();
-            Animator.runtimeAnimatorController = _armed;
-        }
-
         private void UpdateHeroWeapon()
         {
-            Animator.runtimeAnimatorController = _session.Data.IsArmed ? _armed : _disArmed;
+            Animator.runtimeAnimatorController = SwordCount > 0 ? _armed : _disArmed;
         }
 
         public void OnDoThrow()
@@ -200,13 +205,12 @@ namespace Creatures.Mobs.Hero
         
         public void Throw()
         {
-            if (_armed && _throwCooldown.IsReady && _swordsAmount > 1)
+            if (_armed && _throwCooldown.IsReady && SwordCount > 1)
             { 
                 Animator.SetTrigger(ThrowKey); 
                 _throwCooldown.Reset();
-                _swordsAmount--;
-                _session.Data.SwordAmount = _swordsAmount;
-            }
+                _swordsAmount--; 
+             }
         }
 
 #if UNITY_EDITOR

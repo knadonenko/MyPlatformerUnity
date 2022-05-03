@@ -5,9 +5,20 @@ using UnityEngine;
 namespace Model.Definitions
 {
     [CreateAssetMenu(menuName = "Defs/InventoryItems", fileName = "InventoryItems")]
-    public class InventoryItemDefinition : ScriptableObject
+    public class InventoryItemsDefinition : ScriptableObject
     {
         [SerializeField] private ItemDef[] items;
+
+        public ItemDef Get(String id)
+        {
+            foreach (var itemDef in items)
+            {
+                if (itemDef.Id == id)
+                    return itemDef;
+            }
+
+            return default;
+        }
     }
 
     [Serializable]
@@ -15,5 +26,6 @@ namespace Model.Definitions
     {
         [SerializeField] private string id;
         public string Id => id;
+        public bool IsVoid => string.IsNullOrEmpty(id);
     }
 }

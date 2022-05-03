@@ -1,16 +1,17 @@
 using System;
-using Model.Data;
 using UnityEngine;
 
-namespace DefaultNamespace.Model
+namespace Model.Data
 {
     [Serializable]
     public class PlayerData
     {
-        [SerializeField] private InventoryData _inventory;
-        public int Coin;
-        public int Health;
-        public bool IsArmed;
-        public int  SwordAmount;
+        [SerializeField] private InventoryData inventory;
+        // public int coin;
+        public int health;
+        // public bool isArmed;
+        // public int  swordAmount;
+
+        public InventoryData Inventory => inventory;
     }
 } 

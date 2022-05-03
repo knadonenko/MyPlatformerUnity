@@ -5,7 +5,8 @@ namespace Model.Definitions
     [CreateAssetMenu(menuName = "Defs/DefsFacade", fileName = "DefsFacade")]
     public class DefsFacade : ScriptableObject
     {
-        [SerializeField] private InventoryItemDefinition _items;
+        [SerializeField] private InventoryItemsDefinition items;
+        public InventoryItemsDefinition Items => items;
 
         private static DefsFacade _instance;
         public static DefsFacade instDef => _instance == null ? LoadDefs() : _instance;
@@ -14,5 +15,6 @@ namespace Model.Definitions
         {
             return _instance = Resources.Load<DefsFacade>("DefsFacade");
         }
+        
     }
 }

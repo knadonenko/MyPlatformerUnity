@@ -1258,10 +1258,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _data:
-    Coin: 0
-    Health: 5
-    IsArmed: 0
-    SwordAmount: 0
+    inventory:
+      _inventory: []
+    health: 0
 --- !u!4 &340150852
 Transform:
   m_ObjectHideFlags: 0
@@ -15392,7 +15391,7 @@ PrefabInstance:
     - target: {fileID: 7049961871014726933, guid: 3d1120fa62d3047f18aca1f933774c14,
         type: 3}
       propertyPath: m_Name
-      value: Hero_0
+      value: Hero
       objectReference: {fileID: 0}
     - target: {fileID: 7049961871014726940, guid: 3d1120fa62d3047f18aca1f933774c14,
         type: 3}
