@@ -24,7 +24,7 @@ namespace Model.Data
         {
             if (value <= 0) return;
 
-            var itemDef = DefsFacade.instDef.Items.Get(id);
+            var itemDef = DefsFacade.InstDef.Items.Get(id);
             if (itemDef.IsVoid) return;
 
             var item = GetItem(id);
@@ -41,7 +41,7 @@ namespace Model.Data
 
         public void Remove(string id, int value)
         { 
-            var itemDef = DefsFacade.instDef.Items.Get(id);
+            var itemDef = DefsFacade.InstDef.Items.Get(id);
             if (itemDef.IsVoid) return;
             
             var item = GetItem(id);
@@ -71,7 +71,7 @@ namespace Model.Data
     [Serializable]
     public class InventoryItemData
     {
-        public string Id;
+        [InventoryId] public string Id;
         public int Value;
 
         public InventoryItemData(string id)

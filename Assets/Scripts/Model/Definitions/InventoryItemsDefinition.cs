@@ -1,5 +1,4 @@
 using System;
-using Model.Data;
 using UnityEngine;
 
 namespace Model.Definitions
@@ -19,10 +18,13 @@ namespace Model.Definitions
 
             return default;
         }
+#if UNITY_EDITOR
+        public ItemDef[] ItemsForEditor => items;
+#endif
     }
 
     [Serializable]
-    public struct ItemDef
+    public struct ItemDef 
     {
         [SerializeField] private string id;
         public string Id => id;

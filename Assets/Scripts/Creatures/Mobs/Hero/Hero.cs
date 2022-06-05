@@ -64,6 +64,11 @@ namespace Creatures.Mobs.Hero
             UpdateHeroWeapon();
         }
 
+        private void OnDestroy()
+        {
+            _session.Data.Inventory.inventoryChanged -= OnInventoryChanged;
+        }
+
         public void OnInventoryChanged(string id, int value)
         {
             if (id == "sword")
@@ -171,7 +176,6 @@ namespace Creatures.Mobs.Hero
             if (Time.time > _timeStamp + _dashCoolDown && !_isDashing)
             {
                 _timeStamp = Time.time;
-                Debug.Log("DASHING");
                 _isDashing = true;
             }
         }

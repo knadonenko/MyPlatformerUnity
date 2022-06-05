@@ -9,7 +9,7 @@ namespace Model.Definitions
         public InventoryItemsDefinition Items => items;
 
         private static DefsFacade _instance;
-        public static DefsFacade instDef => _instance == null ? LoadDefs() : _instance;
+        public static DefsFacade InstDef => _instance == null ? LoadDefs() : _instance;
 
         private static DefsFacade LoadDefs()
         {
