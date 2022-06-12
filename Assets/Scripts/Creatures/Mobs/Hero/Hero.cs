@@ -205,16 +205,15 @@ namespace Creatures.Mobs.Hero
         public void OnDoThrow()
         {
             _particles.Spawn("throw");
+            Sounds.Play("Range");
         }
         
         public void Throw()
         {
-            if (_armed && _throwCooldown.IsReady && SwordCount > 1)
-            { 
-                Animator.SetTrigger(ThrowKey); 
-                _throwCooldown.Reset();
-                _swordsAmount--; 
-             }
+            if (!_armed || !_throwCooldown.IsReady || SwordCount <= 1) return;
+            Animator.SetTrigger(ThrowKey); 
+            _throwCooldown.Reset();
+            _swordsAmount--;
         }
 
 #if UNITY_EDITOR

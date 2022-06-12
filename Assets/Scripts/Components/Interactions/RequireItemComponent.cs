@@ -1,6 +1,5 @@
 using DefaultNamespace.Model;
 using Model.Data;
-using Model.Definitions;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,8 +8,6 @@ namespace Components.Interactions
     public class RequireItemComponent : MonoBehaviour
     {
         [SerializeField] private InventoryItemData[] _reqired;
-        // [InventoryId] [SerializeField] private string _id;
-        // [SerializeField] private int _count;
         [SerializeField] private bool _removeAfterUse;
 
         [SerializeField] private UnityEvent onSuccess;

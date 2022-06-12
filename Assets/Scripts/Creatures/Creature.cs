@@ -1,5 +1,6 @@
 using System;
 using Components;
+using Components.Audio;
 using Components.ColliderBased;
 using Components.GOBased;
 using UnityEngine;
@@ -23,6 +24,7 @@ namespace DefaultNamespace.Creatures
         protected Rigidbody2D Rigidbody;
         protected Vector2 Direction;
         protected Animator Animator;
+        protected PlaySoundsComponent Sounds;
         protected bool _isGrounded;
         private bool _isJumping;
         
@@ -36,6 +38,7 @@ namespace DefaultNamespace.Creatures
         {
             Rigidbody = GetComponent<Rigidbody2D>();
             Animator = GetComponent<Animator>();
+            Sounds = GetComponent<PlaySoundsComponent>();
         }
 
         protected virtual void Update()
@@ -94,6 +97,7 @@ namespace DefaultNamespace.Creatures
             {
                 yVelocity = jumpSpeed;
                 _particles.Spawn("jump");
+                Sounds.Play("Jump");
             }
 
             return yVelocity;
@@ -117,6 +121,7 @@ namespace DefaultNamespace.Creatures
         public virtual void Attack()
         {
             Animator.SetTrigger(AttackKey);
+            Sounds.Play("Melee");
         }
         
         public void PerformAttack()
